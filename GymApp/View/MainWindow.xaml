@@ -1,0 +1,165 @@
+﻿<Window x:Class="GymApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GymApp"
+        mc:Ignorable="d"
+        Title="GYM ONLINE" Height="650" Width="1100"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <!-- ===== TOP MENU STYLE ===== -->
+        <Style x:Key="MenuTabStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Margin" Value="6,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            CornerRadius="6">
+                            <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E0E0E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== SIDEBAR BUTTON STYLE ===== -->
+        <Style x:Key="SidebarButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#444"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="0,6"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            CornerRadius="6">
+                            <ContentPresenter />
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#ECEFF1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#CFD8DC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Header -->
+            <RowDefinition Height="Auto"/>
+            <!-- Top Menu -->
+            <RowDefinition Height="*"/>
+            <!-- Content -->
+        </Grid.RowDefinitions>
+
+        <!-- ================= HEADER ================= -->
+        <Border Grid.Row="0" Background="#2E7D32" Padding="15,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="GYM ONLINE"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Foreground="White"/>
+                    <TextBlock Text="Train Smart • Eat Clean • Stay Strong"
+                               FontSize="12"
+                               Foreground="#C8E6C9"/>
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Content="Đăng xuất"
+                        Padding="15,6"
+                        Background="#C62828"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Click="Logout_Click" Height="45" VerticalAlignment="Top"/>
+            </Grid>
+        </Border>
+
+        <!-- ================= TOP MENU ================= -->
+        <Border Grid.Row="1" Background="#F5F5F5" BorderThickness="0,0,0,1" BorderBrush="#DDD">
+            <StackPanel Orientation="Horizontal" Margin="10,6">
+                <Button Content="Trang chủ" Style="{StaticResource MenuTabStyle}" Click="MenuTab_Click" Tag="Home"/>
+                <Button Content="Thống kê" Style="{StaticResource MenuTabStyle}" Click="MenuTab_Click" Tag="Statistics"/>
+                <Button Content="Xếp hạng" Style="{StaticResource MenuTabStyle}" Click="MenuTab_Click" Tag="Ranking"/>
+                <Button Content="Thông báo" Style="{StaticResource MenuTabStyle}" Click="MenuTab_Click" Tag="Notification"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ================= CONTENT ================= -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ===== SIDEBAR ===== -->
+            <Border Grid.Column="0" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0">
+                <ScrollViewer>
+                    <StackPanel Margin="10">
+
+                        <!-- USER -->
+                        <TextBlock Text="Người dùng" FontWeight="Bold" Margin="10,10,10,5"/>
+                        <Button Content="Quản lý người dùng" Style="{StaticResource SidebarButtonStyle}" Click="Sidebar_Click" Tag="UserManagement"/>
+
+                        <!-- TRAINING -->
+                        <TextBlock Text="Tập luyện" FontWeight="Bold" Margin="10,20,10,5"/>
+                        <Button Content="Quản lý bài tập" Style="{StaticResource SidebarButtonStyle}" Click="Sidebar_Click" Tag="Exercise"/>
+                        <Button Content="Quản lý lịch tập" Style="{StaticResource SidebarButtonStyle}" Click="Sidebar_Click" Tag="RoutineSchedule"/>
+
+                        <!-- NUTRITION -->
+                        <TextBlock Text="Dinh dưỡng" FontWeight="Bold" Margin="10,20,10,5"/>
+                        <Button Content="Quản lý dinh dưỡng" Style="{StaticResource SidebarButtonStyle}" Click="Sidebar_Click" Tag="Nutrition"/>
+
+                        <!-- SOCIAL -->
+                        <TextBlock Text="Cộng đồng" FontWeight="Bold" Margin="10,20,10,5"/>
+                        <Button Content="Nhóm" Style="{StaticResource SidebarButtonStyle}" Click="Sidebar_Click" Tag="Group"/>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- ===== MAIN CONTENT ===== -->
+            <Border Grid.Column="1" Background="White" Margin="10">
+                <Grid x:Name="MainContent" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

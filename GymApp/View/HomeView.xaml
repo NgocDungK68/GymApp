@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="GymApp.View.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GymApp.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Tổng quan hôm nay"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   Foreground="#333"/>
+
+        <UniformGrid Grid.Row="1" Columns="3" Margin="0,20,0,0">
+            <Border Margin="10" Padding="15" Background="#E8F5E9" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="Buổi tập hôm nay" FontWeight="Bold"/>
+                    <TextBlock Text="2 buổi" FontSize="26" Foreground="#2E7D32"/>
+                </StackPanel>
+            </Border>
+
+            <Border Margin="10" Padding="15" Background="#FFF3E0" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="Calories đã đốt" FontWeight="Bold"/>
+                    <TextBlock Text="520 kcal" FontSize="26" Foreground="#FF9800"/>
+                </StackPanel>
+            </Border>
+
+            <Border Margin="10" Padding="15" Background="#E3F2FD" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="Chuỗi ngày tập" FontWeight="Bold"/>
+                    <TextBlock Text="5 ngày" FontSize="26" Foreground="#1976D2"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+    </Grid>
+</UserControl>
