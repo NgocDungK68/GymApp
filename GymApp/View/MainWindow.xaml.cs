@@ -1,6 +1,8 @@
 ﻿using GymApp.Data;
 using GymApp.Model;
 using GymApp.View;
+using GymApp.View.Nutritions;
+using GymApp.View.Routines;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -60,19 +62,22 @@ namespace GymApp
                         LoadExerciseManagementContent();
                         break;
 
-                    case "WorkoutSchedule":
+                    case "RoutineSchedule":
+                        LoadRoutineManagementContent();
                         break;
 
                     case "Nutrition":
+                        LoadNutritionView();
+                        break;
+
+                    case "Food":
+                        LoadFoodManagementContent();
+                        break;
+
+                    case "Meal":
                         break;
 
                     case "Group":
-                        break;
-
-                    case "Ranking":
-                        break;
-
-                    case "Notification":
                         break;
                 }
             }
@@ -107,6 +112,30 @@ namespace GymApp
             var view = new ExerciseManagementView();
             Grid.SetRow(view, 0);
             MainContent.Children.Add(view);
+        }
+
+        private void LoadRoutineManagementContent()
+        {
+            MainContent.Children.Clear();
+
+            var view = new RoutineManagementView();
+            Grid.SetRow(view, 0);
+            MainContent.Children.Add(view);
+        }
+
+        private void LoadFoodManagementContent()
+        {
+            MainContent.Children.Clear();
+
+            var view = new FoodManagementView();
+            Grid.SetRow(view, 0);
+            MainContent.Children.Add(view);
+        }
+
+        private void LoadNutritionView()
+        {
+            MainContent.Children.Clear();
+            MainContent.Children.Add(new NutritionManagementView());
         }
     }
 }

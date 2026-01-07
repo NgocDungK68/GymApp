@@ -13,7 +13,7 @@ namespace GymApp.Model
         public int id { get; set; }
 
         public string note { get; set; }
-        public string goal_macros { get; set; }
+        public double goal_calories { get; set; }
         public DateTime date { get; set; }
 
         public int user_id { get; set; }

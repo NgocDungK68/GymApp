@@ -143,6 +143,8 @@
                         <!-- NUTRITION -->
                         <TextBlock Text="Dinh dưỡng" FontWeight="Bold" Margin="10,20,10,5"/>
                         <Button Content="Quản lý dinh dưỡng" Style="{StaticResource SidebarButtonStyle}" Click="Sidebar_Click" Tag="Nutrition"/>
+                        <Button Content="Quản lý thức ăn" Style="{StaticResource SidebarButtonStyle}" Click="Sidebar_Click" Tag="Food"/>
+                        <Button Content="Quản lý bữa ăn" Style="{StaticResource SidebarButtonStyle}" Click="Sidebar_Click" Tag="Meal"/>
 
                         <!-- SOCIAL -->
                         <TextBlock Text="Cộng đồng" FontWeight="Bold" Margin="10,20,10,5"/>

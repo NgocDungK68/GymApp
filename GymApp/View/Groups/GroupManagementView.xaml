@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="GymApp.View.Groups.GroupManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GymApp.View.Groups"
+             mc:Ignorable="d"
+             Background="White"
+             d:DesignHeight="600"
+             d:DesignWidth="900">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ================= HEADER ================= -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Title -->
+            <TextBlock Text="Nhóm"
+                       FontSize="22"
+                       FontWeight="SemiBold"
+                       Foreground="#333"
+                       VerticalAlignment="Center"/>
+
+            <!-- Join / Create Group -->
+            <Button Grid.Column="1"
+                    Content="➕ Tham gia hoặc tạo nhóm"
+                    Height="40"
+                    Padding="18,0"
+                    Background="#1976D2"
+                    Foreground="White"
+                    FontSize="14"
+                    Cursor="Hand"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+
+        <!-- ================= GROUP LIST ================= -->
+        <ScrollViewer Grid.Row="1"
+                      Margin="0,20,0,0"
+                      VerticalScrollBarVisibility="Auto">
+
+            <ItemsControl ItemsSource="{Binding Groups}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <!-- ================= GROUP CARD ================= -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="260"
+                                Height="90"
+                                Margin="10"
+                                Padding="12"
+                                Background="White"
+                                BorderBrush="#E0E0E0"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Cursor="Hand">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="56"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Avatar (First Letter) -->
+                                <Border Width="48"
+                                        Height="48"
+                                        Background="#616161"
+                                        CornerRadius="4"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding FirstLetter}"
+                                               FontSize="20"
+                                               FontWeight="Bold"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+
+                                <!-- Group Name -->
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           FontSize="15"
+                                           FontWeight="SemiBold"
+                                           Foreground="#333"
+                                           VerticalAlignment="Center"
+                                           Margin="12,0,0,0"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

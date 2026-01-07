@@ -15,7 +15,7 @@ namespace GymApp.Model
         public int id { get; set; }
 
         public string name { get; set; }
-        public string macros { get; set; }
+        public double calories { get; set; }
 
         public int meal_id { get; set; }
         public Meal Meal { get; set; }

@@ -1,0 +1,181 @@
+﻿<Window x:Class="GymApp.View.AddFoodView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Thêm thực phẩm"
+        Height="560"
+        Width="480"
+        Background="#F2F6F8"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- CARD -->
+    <Border Background="White"
+            Margin="20"
+            CornerRadius="14"
+            Padding="26">
+
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="14"
+                              ShadowDepth="2"
+                              Color="#CCCCCC"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- HEADER -->
+            <TextBlock Grid.Row="0"
+                       Text="🍎 Thêm thực phẩm"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,22"
+                       Foreground="#2C3E50"/>
+
+            <!-- FORM -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+
+                    <!-- TÊN THỰC PHẨM -->
+                    <StackPanel Margin="0,0,0,16">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Tên thực phẩm"
+                                       FontSize="15"
+                                       FontWeight="SemiBold"
+                                       Foreground="#34495E"/>
+                            <TextBlock Text=" *"
+                                       Foreground="Red"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtFoodName"
+                                 Height="40"
+                                 Padding="12,8"
+                                 FontSize="15"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1"
+                                 Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                    <!-- ĐƠN VỊ KHẨU PHẦN -->
+                    <StackPanel Margin="0,0,0,16">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Đơn vị khẩu phần (serving unit)"
+                                       FontSize="15"
+                                       FontWeight="SemiBold"
+                                       Foreground="#34495E"/>
+                            <TextBlock Text=" *"
+                                       Foreground="Red"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtServingUnit"
+                                 Height="40"
+                                 Padding="12,8"
+                                 FontSize="15"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1"
+                                 Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                    <!-- KÍCH THƯỚC KHẨU PHẦN -->
+                    <StackPanel Margin="0,0,0,16">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Kích thước khẩu phần (serving size)"
+                                       FontSize="15"
+                                       FontWeight="SemiBold"
+                                       Foreground="#34495E"/>
+                            <TextBlock Text=" *"
+                                       Foreground="Red"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtServingSize"
+                                 Height="40"
+                                 Padding="12,8"
+                                 FontSize="15"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1"
+                                 Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                    <!-- CALORIES -->
+                    <StackPanel Margin="0,0,0,16">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Calories"
+                                       FontSize="15"
+                                       FontWeight="SemiBold"
+                                       Foreground="#34495E"/>
+                            <TextBlock Text=" *"
+                                       Foreground="Red"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtCalories"
+                                 Height="40"
+                                 Padding="12,8"
+                                 FontSize="15"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1"
+                                 Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- BUTTONS -->
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,22,0,0">
+
+                <Button Content="✔ Xác nhận"
+                        Width="130"
+                        Height="40"
+                        Margin="0,0,14,0"
+                        Background="#4CAF50"
+                        Foreground="White"
+                        FontSize="15"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Click="BtnConfirm_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="20">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Content="✖ Hủy"
+                        Width="130"
+                        Height="40"
+                        Background="#9E9E9E"
+                        Foreground="White"
+                        FontSize="15"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Click="BtnCancel_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="20">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</Window>

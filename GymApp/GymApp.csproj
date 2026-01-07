@@ -17,8 +17,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="View\Routines\" />
-  </ItemGroup>
-
 </Project>
