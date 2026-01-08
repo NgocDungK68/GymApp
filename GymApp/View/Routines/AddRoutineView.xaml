@@ -110,39 +110,99 @@
                                Margin="0,0,0,10"/>
 
                     <DataGrid x:Name="dgExercises"
-                              AutoGenerateColumns="False"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"
-                              HeadersVisibility="Column"
-                              Height="200"
-                              BorderBrush="#E0E0E0"
-                              BorderThickness="1"
-                              Background="White"
-                              GridLinesVisibility="None">
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="False"
+                                  HeadersVisibility="Column"
+                                  Height="200"
+                                  RowHeight="44"
+                                  Background="White"
+                                  BorderThickness="0"
+                                  GridLinesVisibility="None"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">    
 
+                        <!-- HEADER STYLE -->
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="Background" Value="#F5F5F5"/>
+                                <Setter Property="Foreground" Value="#333"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
-                                <Setter Property="Padding" Value="10,6"/>
+                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="Padding" Value="14,8"/>
+                                <!-- kẻ cột + kẻ hàng -->
+                                <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
 
+                        <!-- CELL BORDER (kẻ cột thẳng) -->
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                <Setter Property="Padding" Value="0"/>
+                            </Style>
+                        </DataGrid.CellStyle>
+
                         <DataGrid.Columns>
 
+                            <!-- STT -->
                             <DataGridTextColumn Header="STT"
-                                                Binding="{Binding Index}"
-                                                Width="60"/>
+                            Binding="{Binding Index}"
+                            Width="60"
+                            IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="Padding" Value="14,8"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
 
+                            <!-- TÊN BÀI TẬP -->
                             <DataGridTextColumn Header="Tên bài tập"
-                                                Binding="{Binding ExerciseName}"
-                                                Width="*"/>
+                            Binding="{Binding ExerciseName}"
+                            Width="*"
+                            IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="Padding" Value="14,8"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Foreground" Value="#2C3E50"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
 
+                            <!-- SỐ HIỆP (CÓ THỂ EDIT) -->
                             <DataGridTextColumn Header="Số hiệp"
                                                 Binding="{Binding Sets, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Width="100"
-                                                IsReadOnly="False"/>
+                                                IsReadOnly="False">     
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="Padding" Value="14,8"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+
+                                <DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="Padding" Value="10,6"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                        <EventSetter Event="PreviewTextInput"
+                                                     Handler="NumberOnly_PreviewTextInput"/>
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>
+                            </DataGridTextColumn>
 
                         </DataGrid.Columns>
                     </DataGrid>

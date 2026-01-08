@@ -1,6 +1,7 @@
 ﻿using GymApp.Core;
 using GymApp.Data;
 using GymApp.Model;
+using GymApp.View.Routines;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Windows;
@@ -19,6 +20,8 @@ namespace GymApp.View.Exercises
         private string _originalDescription = "";
 
         private bool _isEditing = false;
+
+        public event Action<int>? ExerciseSelected;
 
         public DetailExerciseView(int exerciseId)
         {
@@ -57,13 +60,42 @@ namespace GymApp.View.Exercises
 
         // ================= BUTTON EVENTS =================
 
-        // 📅 Tạo lịch tập (để sau)
+        // Tạo lịch tập
         private void BtnCreateSchedule_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Chức năng tạo lịch tập sẽ được phát triển sau 😉");
+            if (_exercise == null) return;
+
+            var hostWindow = Window.GetWindow(this);
+
+            // ===============================
+            // CASE 1: Đang nằm trong Window trung gian (ShowDialog)
+            // ===============================
+            if (hostWindow != null && hostWindow.Owner != null)
+            {
+                // bắn event trả exerciseId
+                ExerciseSelected?.Invoke(_exerciseId);
+
+                // đóng window trung gian
+                hostWindow.DialogResult = true;
+                hostWindow.Close();
+                return;
+            }
+
+            // ===============================
+            // CASE 2: Đang nằm trong MainWindow
+            // ===============================
+            if (hostWindow is MainWindow mainWindow)
+            {
+                var addWindow = new AddRoutineView(_exerciseId);
+                addWindow.Owner = Window.GetWindow(this);
+
+                // mở dạng modal
+                addWindow.ShowDialog();
+            }
         }
 
-        // ✏️ SỬA
+
+        // SỬA
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
             if (!IsOwner())
@@ -77,7 +109,7 @@ namespace GymApp.View.Exercises
             SetEditMode();
         }
 
-        // 🗑 XÓA
+        // XÓA
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (!IsOwner())
@@ -106,7 +138,7 @@ namespace GymApp.View.Exercises
             this.Visibility = Visibility.Collapsed;
         }
 
-        // 💾 LƯU
+        // LƯU
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             string newName = txtExerciseName.Text.Trim();
@@ -185,17 +217,26 @@ namespace GymApp.View.Exercises
 
         private void GoBackToList()
         {
-            // Tìm MainWindow
-            var mainWindow = Window.GetWindow(this) as MainWindow;
-            if (mainWindow == null) return;
+            var hostWindow = Window.GetWindow(this);
+            if (hostWindow == null) return;
 
-            // Xóa màn hình hiện tại
-            mainWindow.MainContent.Children.Clear();
+            // ===============================
+            // CASE 1: Đang nằm trong MainWindow
+            // ===============================
+            if (hostWindow is MainWindow mainWindow)
+            {
+                mainWindow.MainContent.Children.Clear();
+                mainWindow.MainContent.Children.Add(
+                    new ExerciseManagementView()
+                );
+                return;
+            }
 
-            // Load màn hình danh sách
-            mainWindow.MainContent.Children.Add(
-                new ExerciseManagementView()
-            );
+            // ===============================
+            // CASE 2: Đang nằm trong Window trung gian
+            // ===============================
+            hostWindow.Content = new ExerciseManagementView();
         }
+
     }
 }

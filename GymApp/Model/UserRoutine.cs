@@ -14,12 +14,15 @@ namespace GymApp.Model
         [Key]
         public int id { get; set; }
 
+        [Column("owner_id")]
         public int? owner_id { get; set; }
 
-        public int user_id { get; set; }
+        [Column("user_id")]
+        public int UserId { get; set; }
         public User User { get; set; }
 
-        public int routine_id { get; set; }
+        [Column("routine_id")]
+        public int RoutineId { get; set; }
         public Routine Routine { get; set; }
     }
 }

@@ -28,6 +28,8 @@ namespace GymApp.View
             = new ObservableCollection<ExerciseRow>();
         private ICollectionView _exerciseView;
 
+        public event Action<int>? ExerciseSelected;
+
         public ExerciseManagementView()
         {
             InitializeComponent();
@@ -73,20 +75,34 @@ namespace GymApp.View
         // Click tên bài tập
         private void ExerciseName_Click(object sender, MouseButtonEventArgs e)
         {
-            if (sender is TextBlock tb && tb.DataContext is ExerciseRow row)
+            if (sender is not TextBlock tb || tb.DataContext is not ExerciseRow row)
+                return;
+
+            // Window chứa UserControl hiện tại
+            var hostWindow = Window.GetWindow(this);
+
+            // ===============================
+            // CASE 1: Đang chạy trong MainWindow
+            // ===============================
+            if (hostWindow is MainWindow mainWindow)
             {
-                // Tìm MainWindow
-                var mainWindow = Window.GetWindow(this) as MainWindow;
-                if (mainWindow == null) return;
-
-                // Xóa màn hình hiện tại
                 mainWindow.MainContent.Children.Clear();
-
-                // Load màn hình chi tiết
                 mainWindow.MainContent.Children.Add(
                     new DetailExerciseView(row.Id)
                 );
+                return;
             }
+
+            // ===============================
+            // CASE 2: Đang chạy trong Window trung gian
+            // ===============================
+            var detailView = new DetailExerciseView(row.Id);
+            detailView.ExerciseSelected += id =>
+            {
+                ExerciseSelected?.Invoke(id);
+            };
+
+            hostWindow.Content = detailView;
         }
 
         // Nút thêm mới bài tập

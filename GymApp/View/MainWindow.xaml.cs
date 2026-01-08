@@ -1,6 +1,7 @@
 ﻿using GymApp.Data;
 using GymApp.Model;
 using GymApp.View;
+using GymApp.View.Groups;
 using GymApp.View.Nutritions;
 using GymApp.View.Routines;
 using System.Text;
@@ -78,6 +79,7 @@ namespace GymApp
                         break;
 
                     case "Group":
+                        LoadGroupManagementContent();
                         break;
                 }
             }
@@ -136,6 +138,15 @@ namespace GymApp
         {
             MainContent.Children.Clear();
             MainContent.Children.Add(new NutritionManagementView());
+        }
+
+        private void LoadGroupManagementContent()
+        {
+            MainContent.Children.Clear();
+
+            var view = new GroupManagementView();
+            Grid.SetRow(view, 0);
+            MainContent.Children.Add(view);
         }
     }
 }

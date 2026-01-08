@@ -16,10 +16,12 @@ namespace GymApp.Model
 
         public int sets { get; set; }
 
-        public int routine_id { get; set; }
+        [Column("routine_id")]
+        public int RoutineId { get; set; }
         public Routine Routine { get; set; }
 
-        public int exercise_id { get; set; }
+        [Column("exercise_id")]
+        public int ExerciseId { get; set; }
         public Exercise Exercise { get; set; }
     }
 }

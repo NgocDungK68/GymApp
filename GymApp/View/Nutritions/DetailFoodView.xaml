@@ -198,7 +198,17 @@
                         FontSize="15"
                         Cursor="Hand"
                         BorderThickness="0"
-                        Click="BtnEdit_Click"/>
+                        Click="BtnEdit_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="22">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
                 <!-- XÓA -->
                 <Button x:Name="btnDelete"
@@ -211,7 +221,17 @@
                         FontSize="15"
                         Cursor="Hand"
                         BorderThickness="0"
-                        Click="BtnDelete_Click"/>
+                        Click="BtnDelete_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="22">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
                 <!-- LƯU -->
                 <Button x:Name="btnSave"
@@ -224,7 +244,17 @@
                         Cursor="Hand"
                         BorderThickness="0"
                         Visibility="Collapsed"
-                        Click="BtnSave_Click"/>
+                        Click="BtnSave_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="22">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
             </StackPanel>
 
         </Grid>

@@ -57,21 +57,13 @@ namespace GymApp.View.Routines
         {
             if (sender is TextBlock tb && tb.DataContext is RoutineRow row)
             {
-                MessageBox.Show(
-                    $"Mở chi tiết lịch tập:\n\n{row.Name}",
-                    "Routine Detail"
-                );
-
-                // Sau này:
-                /*
                 var mainWindow = Window.GetWindow(this) as MainWindow;
                 if (mainWindow == null) return;
 
                 mainWindow.MainContent.Children.Clear();
                 mainWindow.MainContent.Children.Add(
-                    new RoutineDetailView(row.Id)
+                    new DetailRoutineView(row.Id)
                 );
-                */
             }
         }
 
@@ -134,10 +126,10 @@ namespace GymApp.View.Routines
 
             // 1️⃣ Lấy User_Routine của user đang đăng nhập
             var userRoutines = context.UserRoutines
-                .Where(ur => ur.user_id == currentUserId)
+                .Where(ur => ur.UserId == currentUserId)
                 .Select(ur => new
                 {
-                    ur.routine_id,
+                    ur.RoutineId,
                     ur.owner_id
                 })
                 .ToList();
@@ -146,7 +138,7 @@ namespace GymApp.View.Routines
             {
                 // 2️⃣ Routine
                 var routine = context.Routines
-                    .First(r => r.id == ur.routine_id);
+                    .First(r => r.id == ur.RoutineId);
 
                 // 3️⃣ Người tạo (owner)
                 string createdBy = "";
@@ -160,7 +152,7 @@ namespace GymApp.View.Routines
 
                 // 4️⃣ Tổng số sets
                 int totalSets = context.RoutineExercises
-                    .Where(re => re.routine_id == routine.id)
+                    .Where(re => re.RoutineId == routine.id)
                     .Sum(re => (int?)re.sets) ?? 0;
 
                 return new RoutineRow

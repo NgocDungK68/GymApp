@@ -157,7 +157,8 @@
                         Foreground="White"
                         FontSize="15"
                         Cursor="Hand"
-                        BorderThickness="0">
+                        BorderThickness="0"
+                        Click="BtnCreateSchedule_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}"

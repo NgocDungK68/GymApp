@@ -75,7 +75,7 @@ namespace GymApp.View.Nutritions
                 // Xóa màn hình hiện tại
                 mainWindow.MainContent.Children.Clear();
 
-                // Load màn hình chi tiết (bạn tự implement)
+                // Load màn hình chi tiết
                 mainWindow.MainContent.Children.Add(
                     new DetailFoodView(row.Id)
                 );
