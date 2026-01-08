@@ -13,6 +13,7 @@ namespace GymApp.View.Routines
     {
         private readonly int _routineId;
         private ObservableCollection<RoutineExerciseItem> _exerciseList = new();
+        private List<RoutineExerciseItem> _originalExercises = new();
 
         private bool _isEditing = false;
 
@@ -103,6 +104,14 @@ namespace GymApp.View.Routines
                     Sets = re.sets
                 });
             }
+
+            _originalExercises = _exerciseList
+                .Select(x => new RoutineExerciseItem
+                {
+                    ExerciseId = x.ExerciseId,
+                    Sets = x.Sets
+                })
+                .ToList();
         }
 
         // ================= BUTTONS =================
@@ -117,6 +126,7 @@ namespace GymApp.View.Routines
             int? selectedExerciseId = null;
 
             var exerciseView = new ExerciseManagementView();
+            var hostWindow = Window.GetWindow(this);
 
             var selectExerciseWindow = new Window
             {
@@ -125,6 +135,7 @@ namespace GymApp.View.Routines
                 Height = 600,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 Content = exerciseView,
+                Owner = hostWindow
             };
 
             // lắng nghe khi user bấm "Tạo lịch"
@@ -202,24 +213,49 @@ namespace GymApp.View.Routines
                 return;
             }
 
+            bool routineInfoChanged =
+                newName != _originalName ||
+                newDescription != _originalDescription ||
+                newLevel != _originalLevel;
+
+            bool exerciseListChanged = HasExerciseListChanged();
+
             // Không thay đổi
-            if (newName == _originalName &&
-                newDescription == _originalDescription &&
-                newLevel == _originalLevel)
+            if (!routineInfoChanged && !exerciseListChanged)
             {
                 MessageBox.Show("Dữ liệu không thay đổi");
                 return;
             }
 
-
             using var context = new GymDbContext();
-            var routine = context.Routines.FirstOrDefault(r => r.id == _routineId);
+            var routine = context.Routines
+                .Include(r => r.RoutineExercises)
+                .FirstOrDefault(r => r.id == _routineId);
 
             if (routine == null) return;
 
+            // ===== UPDATE ROUTINE =====
             routine.name = newName;
             routine.description = newDescription;
             routine.level = newLevel;
+
+            // ===== UPDATE ROUTINE_EXERCISE =====
+            if (exerciseListChanged)
+            {
+                // Xóa cũ
+                context.RoutineExercises.RemoveRange(routine.RoutineExercises);
+
+                // Thêm mới
+                foreach (var item in _exerciseList)
+                {
+                    context.RoutineExercises.Add(new RoutineExercise
+                    {
+                        RoutineId = _routineId,
+                        ExerciseId = item.ExerciseId,
+                        sets = item.Sets
+                    });
+                }
+            }
 
             context.SaveChanges();
 
@@ -296,6 +332,23 @@ namespace GymApp.View.Routines
                 ExerciseName = exercise.name,
                 Sets = 1
             });
+        }
+
+        private bool HasExerciseListChanged()
+        {
+            if (_exerciseList.Count != _originalExercises.Count)
+                return true;
+
+            for (int i = 0; i < _exerciseList.Count; i++)
+            {
+                if (_exerciseList[i].ExerciseId != _originalExercises[i].ExerciseId)
+                    return true;
+
+                if (_exerciseList[i].Sets != _originalExercises[i].Sets)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

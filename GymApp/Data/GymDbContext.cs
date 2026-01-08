@@ -40,7 +40,7 @@ namespace GymApp.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                "Server=DESKTOP-A5MQTAL;Database=GymOnlineDB;Trusted_Connection=True;TrustServerCertificate=True"
+                "Server=DESKTOP-Q643FS1\\SQLEXPRESS;Database=GymOnlineDB;Trusted_Connection=True;TrustServerCertificate=True"
             );
         }
     }
