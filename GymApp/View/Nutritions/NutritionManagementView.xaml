@@ -28,7 +28,9 @@
                     Margin="0,14"
                     HorizontalAlignment="Center"
                     FontSize="14"
-                    SelectedDateFormat="Short"/>
+                    SelectedDateFormat="Short"
+                    x:Name="datePicker"
+                    SelectedDateChanged="DatePicker_SelectedDateChanged"/>
 
         <!-- ================= MAIN CONTENT ================= -->
         <Grid Grid.Row="2" Margin="0,20,0,0">
@@ -50,7 +52,8 @@
                                FontSize="36"
                                FontWeight="Bold"
                                Foreground="#1976D2"
-                               HorizontalAlignment="Center"/>
+                               HorizontalAlignment="Center"
+                               x:Name="txtRemaining"/>
                     <TextBlock Text="remaining"
                                FontSize="14"
                                Foreground="#555"
@@ -77,7 +80,8 @@
                                        FontWeight="Bold"/>
                             <TextBlock Text="2500 kcal"
                                        FontSize="20"
-                                       Foreground="#2E7D32"/>
+                                       Foreground="#2E7D32"
+                                       x:Name="txtGoal"/>
                         </StackPanel>
 
                         <!-- Edit Button -->
@@ -88,7 +92,8 @@
                                 Background="#C8E6C9"
                                 BorderThickness="0"
                                 Cursor="Hand"
-                                Content="✎">
+                                Content="✎"
+                                Click="BtnEditGoal_Click">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}"
@@ -112,7 +117,8 @@
                                    FontWeight="Bold"/>
                         <TextBlock Text="1200 kcal"
                                    FontSize="20"
-                                   Foreground="#FF9800"/>
+                                   Foreground="#FF9800"
+                                   x:Name="txtFood"/>
                     </StackPanel>
                 </Border>
 
@@ -125,7 +131,8 @@
                                    FontWeight="Bold"/>
                         <TextBlock Text="466 kcal"
                                    FontSize="20"
-                                   Foreground="#1976D2"/>
+                                   Foreground="#1976D2"
+                                   x:Name="txtExercise"/>
                     </StackPanel>
                 </Border>
 
@@ -147,7 +154,7 @@
                     Foreground="#1976D2"
                     FontSize="15"
                     Cursor="Hand"
-                    BorderThickness="0">
+                    BorderThickness="0" Click="BtnViewMeals_Click">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
@@ -167,7 +174,7 @@
                     Foreground="White"
                     FontSize="15"
                     Cursor="Hand"
-                    BorderThickness="0">
+                    BorderThickness="0" Click="BtnAddMeal_Click">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"

@@ -5,8 +5,284 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GymApp.View.Nutritions"
         mc:Ignorable="d"
-        Title="AddMealView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Thêm bữa ăn"
+        Height="650"
+        Width="520"
+        Background="#F2F6F8"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- CARD -->
+    <Border Background="White"
+            Margin="20"
+            CornerRadius="14"
+            Padding="26">
+
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="14"
+                              ShadowDepth="2"
+                              Color="#CCCCCC"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- HEADER -->
+            <TextBlock Grid.Row="0"
+                       Text="🍽 Thêm bữa ăn mới"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,22"
+                       Foreground="#2C3E50"/>
+
+            <!-- FORM -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto" Margin="0,4,0,58" Grid.RowSpan="2">
+                <StackPanel>
+
+                    <!-- TÊN BỮA ĂN -->
+                    <StackPanel Margin="0,0,0,16">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Tên bữa ăn"
+                                       FontSize="15"
+                                       Foreground="#34495E"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Text=" *"
+                                       FontSize="15"
+                                       Foreground="Red"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="txtMealName"
+                                 Height="40"
+                                 Padding="12,8"
+                                 FontSize="15"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1"
+                                 Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                    <!-- LOẠI BỮA ĂN -->
+                    <StackPanel Margin="0,0,0,16">
+                        <TextBlock Text="Loại bữa ăn"
+                                   FontSize="15"
+                                   Foreground="#34495E"
+                                   FontWeight="SemiBold"/>
+
+                        <ComboBox x:Name="cbMealType"
+                                  Height="40"
+                                  FontSize="15"
+                                  Margin="0,6,0,0"
+                                  BorderBrush="#DDDDDD"
+                                  BorderThickness="1">
+                            <ComboBoxItem Content="Sáng"/>
+                            <ComboBoxItem Content="Trưa"/>
+                            <ComboBoxItem Content="Chiều"/>
+                            <ComboBoxItem Content="Tối"/>
+                            <ComboBoxItem Content="Snack"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- NGÀY -->
+                    <StackPanel Margin="0,0,0,16">
+                        <TextBlock Text="Ngày"
+                                   FontSize="15"
+                                   Foreground="#34495E"
+                                   FontWeight="SemiBold"/>
+
+                        <DatePicker x:Name="dpMealDate"
+                                    Height="40"
+                                    FontSize="15"
+                                    Margin="0,6,0,0"
+                                    BorderBrush="#DDDDDD"
+                                    BorderThickness="1"/>
+                    </StackPanel>
+
+                    <!-- MÔ TẢ -->
+                    <StackPanel Margin="0,0,0,20">
+                        <TextBlock Text="Mô tả"
+                                   FontSize="15"
+                                   Foreground="#34495E"
+                                   FontWeight="SemiBold"/>
+
+                        <TextBox x:Name="txtDescription"
+                                 Height="100"
+                                 Padding="12"
+                                 FontSize="15"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1"
+                                 Margin="0,6,0,0"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"/>
+                    </StackPanel>
+
+                    <!-- DANH SÁCH THỨC ĂN -->
+                    <TextBlock Text="Danh sách thức ăn"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               Foreground="#2C3E50"
+                               Margin="0,0,0,10"/>
+
+                    <DataGrid x:Name="dgFoods"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              Height="200"
+                              RowHeight="44"
+                              Background="White"
+                              BorderThickness="0"
+                              GridLinesVisibility="None"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                        <!-- HEADER STYLE -->
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#F5F5F5"/>
+                                <Setter Property="Foreground" Value="#333"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="Padding" Value="14,8"/>
+                                <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <!-- CELL STYLE -->
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                <Setter Property="Padding" Value="0"/>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.Columns>
+
+                            <!-- STT -->
+                            <DataGridTextColumn Header="STT"
+                                                Binding="{Binding Index}"
+                                                Width="60">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="Padding" Value="14,8"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <!-- TÊN THỨC ĂN -->
+                            <DataGridTextColumn Header="Tên thức ăn"
+                                                Binding="{Binding FoodName}"
+                                                Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="Padding" Value="14,8"/>
+                                        <Setter Property="Foreground" Value="#2C3E50"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <!-- CALORIES -->
+                            <DataGridTextColumn Header="Calories"
+                                                Binding="{Binding Calories}"
+                                                Width="120">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="Padding" Value="14,8"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- THÊM THỨC ĂN -->
+                    <Button Content="➕ Thêm thức ăn"
+                            Height="42"
+                            Margin="0,16,0,0"
+                            Background="#2196F3"
+                            Foreground="White"
+                            FontSize="15"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Click="BtnAddFood_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="20">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- BUTTONS -->
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,22,0,0">
+
+                <Button Content="✔ Xác nhận"
+                        Width="130"
+                        Height="40"
+                        Margin="0,0,14,0"
+                        Background="#4CAF50"
+                        Foreground="White"
+                        FontSize="15"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Click="BtnConfirm_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="20">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Content="✖ Hủy"
+                        Width="130"
+                        Height="40"
+                        Background="#9E9E9E"
+                        Foreground="White"
+                        FontSize="15"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Click="BtnCancel_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="20">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

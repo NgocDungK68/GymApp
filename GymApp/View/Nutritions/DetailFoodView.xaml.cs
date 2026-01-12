@@ -2,6 +2,8 @@
 using GymApp.Data;
 using GymApp.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,12 +14,15 @@ namespace GymApp.View.Nutritions
         private readonly int _foodId;
         private Food? _food;
 
+        // Lưu dữ liệu gốc để so sánh thay đổi
         private string _originalName = "";
         private string _originalUnit = "";
         private double? _originalSize;
         private double _originalCalories;
 
         private bool _isEditing = false;
+
+        public event Action<int>? FoodSelected;
 
         public DetailFoodView(int foodId)
         {
@@ -28,7 +33,7 @@ namespace GymApp.View.Nutritions
             SetReadOnlyMode();
         }
 
-        // ================= LOAD =================
+        // ================= LOAD DATA =================
         private void LoadFood()
         {
             using var context = new GymDbContext();
@@ -49,18 +54,77 @@ namespace GymApp.View.Nutritions
             txtCalories.Text = _food.calories.ToString();
             txtCreatedBy.Text = _food.is_system ? "System" : "Bạn";
 
+            // Lưu bản gốc
             _originalName = _food.name;
             _originalUnit = _food.serving_unit;
             _originalSize = _food.serving_size;
             _originalCalories = _food.calories;
         }
 
-        // ================= BUTTONS =================
+        // ================= BUTTON EVENTS =================
 
+        // Tạo bữa ăn
         private void BtnCreateMeal_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Chức năng tạo bữa ăn sẽ được phát triển sau 😉");
+            if (_food == null) return;
+
+            int? nutritionId = GetLatestNutritionId();
+
+            if (nutritionId == null)
+            {
+                MessageBox.Show("Không tìm thấy ngày dinh dưỡng. Vui lòng tạo Nutrition trước.");
+                return;
+            }
+
+            var hostWindow = Window.GetWindow(this);
+
+            // ===============================
+            // CASE 1: Đang nằm trong Window trung gian (ShowDialog)
+            // ===============================
+            if (hostWindow != null && hostWindow.Owner != null)
+            {
+                // bắn event trả foodId
+                FoodSelected?.Invoke(_foodId);
+
+                hostWindow.DialogResult = true;
+                hostWindow.Close();
+                return;
+            }
+
+            // ===============================
+            // CASE 2: Đang nằm trong MainWindow
+            // ===============================
+            if (hostWindow is MainWindow)
+            {
+                var addWindow = new AddMealView(nutritionId.Value, _foodId);
+                addWindow.Owner = Window.GetWindow(this);
+
+                addWindow.ShowDialog();
+            }
         }
+
+        // ================= HELPERS =================
+
+        /// <summary>
+        /// Lấy Nutrition mới nhất (id cao nhất) của user hiện tại
+        /// </summary>
+        private int? GetLatestNutritionId()
+        {
+            if (!UserSession.IsLoggedIn)
+                return null;
+
+            int userId = UserSession.CurrentUser!.id;
+
+            using var context = new GymDbContext();
+
+            return context.Nutritions
+                          .Where(n => n.UserId == userId)
+                          .OrderByDescending(n => n.id)
+                          .Select(n => (int?)n.id)
+                          .FirstOrDefault();
+        }
+
+        // ================= CRUD =================
 
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
@@ -84,8 +148,9 @@ namespace GymApp.View.Nutritions
             }
 
             if (MessageBox.Show("Bạn có chắc muốn xóa thức ăn này?",
-                "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning)
-                != MessageBoxResult.Yes)
+                "Xác nhận",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) != MessageBoxResult.Yes)
                 return;
 
             using var context = new GymDbContext();
@@ -105,6 +170,7 @@ namespace GymApp.View.Nutritions
         {
             string newName = txtFoodName.Text.Trim();
             string newUnit = txtServingUnit.Text.Trim();
+
             double.TryParse(txtServingSize.Text.Trim(), out double newSize);
             double.TryParse(txtCalories.Text.Trim(), out double newCalories);
 
@@ -114,7 +180,6 @@ namespace GymApp.View.Nutritions
                 return;
             }
 
-            // Không thay đổi
             if (newName == _originalName &&
                 newUnit == _originalUnit &&
                 newSize == _originalSize &&
@@ -144,8 +209,6 @@ namespace GymApp.View.Nutritions
         {
             GoBackToList();
         }
-
-        // ================= HELPERS =================
 
         private bool IsOwner()
         {
@@ -180,13 +243,17 @@ namespace GymApp.View.Nutritions
 
         private void GoBackToList()
         {
-            var mainWindow = Window.GetWindow(this) as MainWindow;
-            if (mainWindow == null) return;
+            var hostWindow = Window.GetWindow(this);
+            if (hostWindow == null) return;
 
-            mainWindow.MainContent.Children.Clear();
-            mainWindow.MainContent.Children.Add(
-                new FoodManagementView()
-            );
+            if (hostWindow is MainWindow mainWindow)
+            {
+                mainWindow.MainContent.Children.Clear();
+                mainWindow.MainContent.Children.Add(new FoodManagementView());
+                return;
+            }
+
+            hostWindow.Content = new FoodManagementView();
         }
     }
 }

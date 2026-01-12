@@ -76,6 +76,7 @@ namespace GymApp
                         break;
 
                     case "Meal":
+                        LoadMealManagementContent();
                         break;
 
                     case "Group":
@@ -130,6 +131,15 @@ namespace GymApp
             MainContent.Children.Clear();
 
             var view = new FoodManagementView();
+            Grid.SetRow(view, 0);
+            MainContent.Children.Add(view);
+        }
+
+        private void LoadMealManagementContent()
+        {
+            MainContent.Children.Clear();
+
+            var view = new MealManagementView();
             Grid.SetRow(view, 0);
             MainContent.Children.Add(view);
         }

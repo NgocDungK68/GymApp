@@ -118,8 +118,16 @@ namespace GymApp.View.Routines
 
         private void BtnStartWorkout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Chức năng bắt đầu buổi tập sẽ phát triển sau 💪");
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow == null) return;
+
+            mainWindow.MainContent.Children.Clear();
+
+            // Mở WorkoutView và truyền routine_id
+            var workoutView = new WorkoutView(_routineId);
+            mainWindow.MainContent.Children.Add(workoutView);
         }
+
 
         private void BtnAddExercise_Click(object sender, RoutedEventArgs e)
         {
