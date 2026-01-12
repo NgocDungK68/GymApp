@@ -21,14 +21,34 @@ namespace GymApp.View.Nutritions
 
         private ICollectionView _mealView;
 
+        // ===== FILTER =====
+        private int? _nutritionId; // LUÔN CÓ GIÁ TRỊ
+
+        // ================= DEFAULT (LOAD THEO USER) =================
         public MealManagementView()
         {
             InitializeComponent();
 
+            InitView();
+            LoadMeals();
+        }
+
+        // ================= WITH NUTRITION =================
+        public MealManagementView(int nutritionId)
+        {
+            InitializeComponent();
+
+            _nutritionId = nutritionId;
+
+            InitView();
+            LoadMeals();
+        }
+
+        // ================= INIT =================
+        private void InitView()
+        {
             _mealView = CollectionViewSource.GetDefaultView(Meals);
             dgMeals.ItemsSource = _mealView;
-
-            LoadMeals();
         }
 
         // ================= LOAD =================
@@ -40,14 +60,12 @@ namespace GymApp.View.Nutritions
                 return;
             }
 
-            var list = GetMealsFromDb()
-                .OrderByDescending(m => m.date)
-                .ToList();
+            var meals = GetMealsFromDb();
 
             Meals.Clear();
             int index = 1;
 
-            foreach (var meal in list)
+            foreach (var meal in meals)
             {
                 Meals.Add(new MealRow
                 {
@@ -55,13 +73,71 @@ namespace GymApp.View.Nutritions
                     Id = meal.id,
                     Name = meal.name,
                     MealType = meal.meal_type,
-                    TotalCalories = CalculateCalories(meal),
+                    TotalCalories = meal.total_calories,
                     Date = meal.date?.ToString("dd/MM/yyyy") ?? ""
                 });
             }
 
             _mealView.Refresh();
             txtTotal.Text = Meals.Count.ToString();
+        }
+
+        // ================= DB =================
+        private List<Meal> GetMealsFromDb()
+        {
+            using var context = new GymDbContext();
+
+            // ===== CASE 1: Có nutrition_id =====
+            if (_nutritionId.HasValue)
+            {
+                return context.Meals
+                    .AsNoTracking()
+                    .Include(m => m.MealFoods)
+                        .ThenInclude(mf => mf.Food)
+                    .Where(m => m.NutritionId == _nutritionId.Value)
+                    .AsEnumerable() // để OrderBy theo logic custom nếu cần
+                                    // .OrderBy(m => GetMealTypeOrder(m.meal_type))
+                    .ToList();
+            }
+
+            // ===== CASE 2: Không có nutrition_id → load theo user =====
+            int userId = UserSession.CurrentUser!.id;
+
+            return context.Meals
+                .AsNoTracking()
+                .Include(m => m.MealFoods)
+                    .ThenInclude(mf => mf.Food)
+                .Where(m => m.Nutrition.UserId == userId)
+                .OrderByDescending(m => m.date)
+                .ToList();
+        }
+
+        // ================= MEAL TYPE ORDER =================
+        private int GetMealTypeOrder(string mealType)
+        {
+            return mealType switch
+            {
+                "Sáng" => 1,
+                "Trưa" => 2,
+                "Chiều" => 3,
+                "Tối" => 4,
+                "Snack" => 5,
+                _ => 99
+            };
+        }
+
+        // ================= ADD NEW =================
+        private void BtnAddNew_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_nutritionId.HasValue)
+            {
+                _nutritionId = GetLatestNutritionId() ?? throw new Exception("User chưa có Nutrition!"); ;
+            }
+            var addView = new AddMealView(_nutritionId.Value);
+            addView.Owner = Window.GetWindow(this);
+            addView.ShowDialog();
+
+            LoadMeals();
         }
 
         // ================= CLICK NAME =================
@@ -77,16 +153,6 @@ namespace GymApp.View.Nutritions
                     new DetailMealView(row.Id)
                 );
             }
-        }
-
-        // ================= ADD NEW =================
-        private void BtnAddNew_Click(object sender, RoutedEventArgs e)
-        {
-            var addView = new AddMealView();
-            addView.Owner = Window.GetWindow(this);
-            addView.ShowDialog();
-
-            LoadMeals();
         }
 
         // ================= SEARCH =================
@@ -115,29 +181,24 @@ namespace GymApp.View.Nutritions
             txtTotal.Text = _mealView.Cast<object>().Count().ToString();
         }
 
-        // ================= DB =================
-        private List<Meal> GetMealsFromDb()
+        // ================= HELPER =================
+        /// <summary>
+        /// Lấy Nutrition mới nhất (id cao nhất) của user hiện tại
+        /// </summary>
+        private int? GetLatestNutritionId()
         {
-            int currentUserId = UserSession.CurrentUser!.id;
+            if (!UserSession.IsLoggedIn)
+                return null;
+
+            int userId = UserSession.CurrentUser!.id;
 
             using var context = new GymDbContext();
 
-            return context.Meals
-                .AsNoTracking()
-                .Include(m => m.MealFoods)
-                .ThenInclude(mf => mf.Food)
-                .Where(m => m.Nutrition.user_id == currentUserId)
-                .ToList();
-        }
-
-        // ================= CALORIES =================
-        private double CalculateCalories(Meal meal)
-        {
-            if (meal.MealFoods == null) return 0;
-
-            return meal.MealFoods
-                .Where(mf => mf.Food != null)
-                .Sum(mf => mf.Food.calories);
+            return context.Nutritions
+                .Where(n => n.UserId == userId)
+                .OrderByDescending(n => n.id)
+                .Select(n => (int?)n.id)
+                .FirstOrDefault();
         }
     }
 
@@ -146,9 +207,9 @@ namespace GymApp.View.Nutritions
     {
         public int Index { get; set; }
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string MealType { get; set; }
+        public string Name { get; set; } = "";
+        public string MealType { get; set; } = "";
         public double TotalCalories { get; set; }
-        public string Date { get; set; }
+        public string Date { get; set; } = "";
     }
 }

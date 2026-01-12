@@ -22,6 +22,8 @@ namespace GymApp.View.Nutritions
 
         private ICollectionView _foodView;
 
+        public event Action<int>? FoodSelected;
+
         public FoodManagementView()
         {
             InitializeComponent();
@@ -33,6 +35,7 @@ namespace GymApp.View.Nutritions
             LoadFoods();
         }
 
+        // ================= LOAD DATA =================
         private void LoadFoods()
         {
             // 🔒 BẮT BUỘC đăng nhập
@@ -66,20 +69,34 @@ namespace GymApp.View.Nutritions
         // ================= CLICK TÊN THỨC ĂN =================
         private void FoodName_Click(object sender, MouseButtonEventArgs e)
         {
-            if (sender is TextBlock tb && tb.DataContext is FoodRow row)
+            if (sender is not TextBlock tb || tb.DataContext is not FoodRow row)
+                return;
+
+            // Window chứa UserControl hiện tại
+            var hostWindow = Window.GetWindow(this);
+
+            // ===============================
+            // CASE 1: Đang chạy trong MainWindow
+            // ===============================
+            if (hostWindow is MainWindow mainWindow)
             {
-                // Tìm MainWindow
-                var mainWindow = Window.GetWindow(this) as MainWindow;
-                if (mainWindow == null) return;
-
-                // Xóa màn hình hiện tại
                 mainWindow.MainContent.Children.Clear();
-
-                // Load màn hình chi tiết
                 mainWindow.MainContent.Children.Add(
                     new DetailFoodView(row.Id)
                 );
+                return;
             }
+
+            // ===============================
+            // CASE 2: Đang chạy trong Window trung gian
+            // ===============================
+            var detailView = new DetailFoodView(row.Id);
+            detailView.FoodSelected += id =>
+            {
+                FoodSelected?.Invoke(id);
+            };
+
+            hostWindow.Content = detailView;
         }
 
         // ================= NÚT THÊM MỚI =================
@@ -100,7 +117,7 @@ namespace GymApp.View.Nutritions
             // mở dạng modal
             addWindow.ShowDialog();
 
-            // reload danh sách
+            // reload lại danh sách
             LoadFoods();
         }
 
@@ -113,7 +130,7 @@ namespace GymApp.View.Nutritions
 
             if (string.IsNullOrEmpty(keyword))
             {
-                _foodView.Filter = null;
+                _foodView.Filter = null; // hiện tất cả
             }
             else
             {
@@ -121,6 +138,7 @@ namespace GymApp.View.Nutritions
                 {
                     if (obj is FoodRow row && !string.IsNullOrEmpty(row.Name))
                     {
+                        // BẮT ĐẦU BẰNG CHUỖI NHẬP
                         return row.Name.ToLower().StartsWith(keyword);
                     }
                     return false;

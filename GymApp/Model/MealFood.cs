@@ -17,10 +17,14 @@ namespace GymApp.Model
         public string name { get; set; }
         public double calories { get; set; }
 
-        public int meal_id { get; set; }
+        [Column("meal_id")]
+
+        public int MealId { get; set; }
         public Meal Meal { get; set; }
 
-        public int food_id { get; set; }
+        [Column("food_id")]
+
+        public int FoodId { get; set; }
         public Food Food { get; set; }
     }
 }
