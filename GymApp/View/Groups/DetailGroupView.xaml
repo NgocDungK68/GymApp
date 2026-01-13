@@ -1,0 +1,198 @@
+﻿<UserControl x:Class="GymApp.View.Groups.DetailGroupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GymApp.View.Groups"
+             mc:Ignorable="d" 
+             Background="White"
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <UserControl.Resources>
+        <DropShadowEffect x:Key="DropShadowEffectResource"
+                          BlurRadius="10"
+                          ShadowDepth="2"
+                          Color="#CCCCCC"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Group Name -->
+            <RowDefinition Height="Auto"/>
+            <!-- Top Buttons -->
+            <RowDefinition Height="*"/>
+            <!-- Challenge List -->
+        </Grid.RowDefinitions>
+
+        <!-- ================= GROUP NAME ================= -->
+        <TextBlock Grid.Row="0"
+                   Text="{Binding GroupName}"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Foreground="#2C3E50"
+                   Margin="0,0,0,16"/>
+
+        <!-- ================= TOP BUTTONS ================= -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,20" >
+
+            <!-- Xem thành viên -->
+            <Button Content="👥 Thành viên"
+                    Height="40"
+                    Width="130"
+                    Padding="12,0"
+                    Background="#1976D2"
+                    Foreground="White"
+                    FontSize="14"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Margin="0,0,10,0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- Xem thông tin -->
+            <Button Content="ℹ️ Thông tin nhóm"
+                    Height="40"
+                    Width="150"
+                    Padding="12,0"
+                    Background="#9C27B0"
+                    Foreground="White"
+                    FontSize="14"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Margin="0,0,10,0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+
+        <!-- ================= CHALLENGE LIST ================= -->
+        <ScrollViewer Grid.Row="2"
+                      VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Challenges}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="280"
+                                Margin="10"
+                                Padding="16"
+                                Background="White"
+                                BorderBrush="#E0E0E0"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Effect="{DynamicResource DropShadowEffectResource}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding name}"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="#2C3E50"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Margin="0,4,0,0"
+                                           FontSize="13"
+                                           Foreground="#555">
+                                    <Run Text="Loại: "/>
+                                    <Run Text="{Binding challenge_type}"/>
+                                    <Run Text=", Mục tiêu: "/>
+                                    <Run Text="{Binding challenge_target}"/>
+                                </TextBlock>
+
+                                <TextBlock Margin="0,2,0,0"
+                                           FontSize="13"
+                                           Foreground="#777">
+                                    <Run Text="Từ: "/>
+                                    <Run Text="{Binding start_date, StringFormat=d}"/>
+                                    <Run Text=" đến "/>
+                                    <Run Text="{Binding end_date, StringFormat=d}"/>
+                                </TextBlock>
+
+                                <TextBlock Text="{Binding description}"
+                                           Margin="0,6,0,0"
+                                           FontSize="14"
+                                           Foreground="#333"
+                                           TextWrapping="Wrap"
+                                           MaxHeight="60"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- ================= BOTTOM ACTIONS ================= -->
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="0,0,0,10">
+
+            <Button Content="➕ Tạo thử thách"
+                    Width="150"
+                    Height="40"
+                    Margin="0,0,10,0"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    FontSize="14"
+                    Cursor="Hand"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Content="➕ Thêm thành viên"
+                    Width="150"
+                    Height="40"
+                    Margin="0,0,10,0"
+                    Background="#FF9800"
+                    Foreground="White"
+                    FontSize="14"
+                    Cursor="Hand"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Content="✖ Rời nhóm"
+                    Width="120"
+                    Height="40"
+                    Background="#F44336"
+                    Foreground="White"
+                    FontSize="14"
+                    Cursor="Hand"
+                    BorderThickness="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

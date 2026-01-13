@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GymApp.Model
 {
+    [Table("Challenge")]
     public class Challenge
     {
         [Key]
@@ -19,7 +21,8 @@ namespace GymApp.Model
         public DateTime? start_date { get; set; }
         public DateTime? end_date { get; set; }
 
-        public int? group_id { get; set; }
+        [Column("group_id")]
+        public int? GroupId { get; set; }
         public Group Group { get; set; }
 
         public ICollection<ChallengeUser> ChallengeUsers { get; set; }

@@ -29,26 +29,53 @@
                        Foreground="#333"
                        VerticalAlignment="Center"/>
 
-            <!-- Join / Create Group -->
-            <Button Grid.Column="1"
-                    Content="➕ Tham gia hoặc tạo nhóm"
-                    Height="40"
-                    Padding="18,0"
-                    Background="#1976D2"
-                    Foreground="White"
-                    FontSize="14"
-                    Cursor="Hand"
-                    BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="20">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+            <!-- ACTION BUTTONS -->
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal">
+
+                <!-- CREATE GROUP -->
+                <Button Content="➕ Tạo nhóm"
+                        Height="40"
+                        Padding="18,0"
+                        Margin="0,0,10,0"
+                        Background="#4CAF50"
+                        Foreground="White"
+                        FontSize="14"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Click="BtnCreateGroup_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="20">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- JOIN GROUP -->
+                <Button Content="👥 Tham gia nhóm"
+                        Height="40"
+                        Padding="18,0"
+                        Background="#1976D2"
+                        Foreground="White"
+                        FontSize="14"
+                        Cursor="Hand"
+                        BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="20">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+            </StackPanel>
         </Grid>
 
         <!-- ================= GROUP LIST ================= -->
@@ -74,7 +101,8 @@
                                 BorderBrush="#E0E0E0"
                                 BorderThickness="1"
                                 CornerRadius="8"
-                                Cursor="Hand">
+                                Cursor="Hand"
+                                MouseLeftButtonUp="GroupCard_MouseLeftButtonUp">
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -82,7 +110,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <!-- Avatar (First Letter) -->
+                                <!-- Avatar -->
                                 <Border Width="48"
                                         Height="48"
                                         Background="#616161"

@@ -17,10 +17,12 @@ namespace GymApp.Model
         public string role_in_group { get; set; }
         public DateTime joined_at { get; set; }
 
-        public int group_id { get; set; }
+        [Column("group_id")]
+        public int GroupId { get; set; }
         public Group Group { get; set; }
 
-        public int user_id { get; set; }
+        [Column("user_id")]
+        public int UserId { get; set; }
         public User User { get; set; }
     }
 }
